@@ -1,0 +1,21 @@
+name: Matrix Strategy Workflow
+
+on: [push]
+
+jobs:
+  set-up-nodejs-job:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node-version: [10, 12, 14]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v4.4.0
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Check Node.js version
+        run: |
+          echo "Running on OS: ${{ matrix.os }}"
+          echo "Using Node.js version: ${{ matrix.node-version }}"
+          node --version
