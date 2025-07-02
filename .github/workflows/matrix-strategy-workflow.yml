@@ -19,3 +19,18 @@ jobs:
           echo "Running on OS: ${{ matrix.os }}"
           echo "Using Node.js version: ${{ matrix.node-version }}"
           node --version
+      # https://tools.slack.dev/slack-github-action/sending-techniques/sending-data-slack-incoming-webhook/
+      - name: Slack notification (slackapi/slack-github-action)
+        uses: slackapi/slack-github-action@v2.1.0
+        with:
+          webhook: ${{ secrets.INCOM_WEBHOOK_FOR_SLACK }}
+          webhook-type: incoming-webhook
+          payload: '{"text": "Node.js setup completed on O.S. [${{ matrix.os }}] with version [${{ matrix.node-version }}]"}'
+      - name: Slack notification (rtCamp/action-slack)
+        uses: rtCamp/action-slack-notify@v2.3.3
+        env:
+          SLACK_WEBHOOK: ${{ secrets.INCOM_WEBHOOK_FOR_SLACK }}
+          SLACK_USERNAME: 'Krizalith (GH-Actions Workflow)'
+        with:
+          author_name: 'Matrix Strategy GH-Actions Workflow'
+          fields: repo,message,commit,author,action,eventName
